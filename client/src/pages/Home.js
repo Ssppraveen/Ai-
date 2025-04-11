@@ -48,7 +48,7 @@ const Home = () => {
   const fetchCategories = async () => {
     try {
       setLoading(true);
-      const response = await fetch('/api/categories');
+      const response = await fetch('${process.env.REACT_APP_API_URL}/api/categories');
       
       if (!response.ok) {
         throw new Error(`Failed to fetch categories: ${response.status}`);
