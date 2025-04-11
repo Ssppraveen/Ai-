@@ -177,5 +177,9 @@ router.put('/profile', auth, async (req, res) => {
         });
     }
 });
+router.post('/test-body', (req, res) => {
+    console.log("Test body:", req.body);
+    res.json({ received: req.body });
+});
 
 module.exports = router; 
