@@ -132,6 +132,17 @@ router.get('/profile', auth, async (req, res) => {
     }
 });
 
+// @route   GET /api/users/test
+// @desc    Dummy route to test user route setup
+// @access  Public
+router.get('/test', (req, res) => {
+  res.status(200).json({
+    success: true,
+    message: 'User route is working 🎉',
+    timestamp: new Date().toISOString()
+  });
+});
+
 // @route   PUT api/users/profile
 // @desc    Update user profile
 // @access  Private
