@@ -6,13 +6,12 @@ const allowedOrigins = [
   'http://localhost:3000', // for local development
   'https://ecommerce-aichatbot.vercel.app/' // replace with your Vercel URL after deploying
 ];
-app.get("/", (req, res) => {
-  res.send("Server is running!");
-});
+const productRoutes = require('./routes/productRoutes');
+const userRoutes = require('./routes/userRoutes');
 
-app.listen(PORT, () => {
-  console.log(`Server is listening on port ${PORT}`);
-});
+// Use routes
+app.use('/api/products', productRoutes);
+app.use('/api/users', userRoutes);
 
 app.use(cors({
   origin: function (origin, callback) {
@@ -24,3 +23,12 @@ app.use(cors({
   },
   credentials: true // only needed if you’re sending cookies or auth headers
 }));
+
+app.get("/", (req, res) => {
+  res.send("Server is running!");
+});
+
+app.listen(PORT, () => {
+  console.log(`Server is listening on port ${PORT}`);
+});
+
