@@ -41,9 +41,19 @@ const corsOptions = {
 
 app.use(cors(corsOptions));
 
-// Middleware
+// Body parsers
 app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
+
+// Safe logging of parsed body
+app.use((req, res, next) => {
+  console.log('--- Incoming Request ---');
+  console.log('Method:', req.method);
+  console.log('URL:', req.originalUrl);
+  console.log('Headers:', req.headers);
+  console.log('Parsed Body:', req.body);
+  next();
+});
 
 // Security middleware
 app.use(helmet({
@@ -101,21 +111,6 @@ mongoose.connect(process.env.MONGODB_URI || 'mongodb://localhost:27017/mobile-ec
   process.exit(1);
 });
 
-app.use((req, res, next) => {
-  console.log('--- Incoming Request ---');
-  console.log('Method:', req.method);
-  console.log('URL:', req.originalUrl);
-  console.log('Headers:', req.headers);
-  let body = '';
-  req.on('data', chunk => {
-    body += chunk.toString();
-  });
-  req.on('end', () => {
-    console.log('Raw Body:', body);
-    next();
-  });
-});
-
 // Register routes
 app.use('/api/users', userRoutes);
 app.use('/api/products', productRoutes);
@@ -156,4 +151,4 @@ app.use((req, res) => {
 const PORT = process.env.PORT || 5000;
 app.listen(PORT, () => {
   console.log(`Server running in ${process.env.NODE_ENV} mode on port ${PORT}`);
-}); 
+});
