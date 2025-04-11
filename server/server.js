@@ -101,6 +101,21 @@ mongoose.connect(process.env.MONGODB_URI || 'mongodb://localhost:27017/mobile-ec
   process.exit(1);
 });
 
+app.use((req, res, next) => {
+  console.log('--- Incoming Request ---');
+  console.log('Method:', req.method);
+  console.log('URL:', req.originalUrl);
+  console.log('Headers:', req.headers);
+  let body = '';
+  req.on('data', chunk => {
+    body += chunk.toString();
+  });
+  req.on('end', () => {
+    console.log('Raw Body:', body);
+    next();
+  });
+});
+
 // Register routes
 app.use('/api/users', userRoutes);
 app.use('/api/products', productRoutes);
